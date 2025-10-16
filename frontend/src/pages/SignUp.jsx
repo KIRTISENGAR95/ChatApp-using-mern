@@ -16,7 +16,7 @@ function SignUp(){
 
         <div className='w-[90%] h-[50px] border-2 border-[#20c7ff] overflow-hidden rounded-lg shadow-gray-200 shadow-lg relative'>
           <input type={`${show ? "text":"password"}`} placeholder='password' className='w-full h-full outline-none px-[20px] py-[10px] bg-[white] shadow-gray-200 shadow-lg text-gray-700 text-[19px]'/>
-          <span className='absolute top-[10px] right-[20px] text-[19px] text-[#20c7ff] font-semibold' onClick={()=>setShow(prev=>!prev )}>{`${show?"hidden":"show"}`}</span>
+          <span className='absolute top-[10px] right-[20px] text-[19px] text-[#20c7ff] font-semibold cursor-pointer' onClick={()=>setShow(prev=>!prev )}>{`${show?"hidden":"show"}`}</span>
         </div>
 
         <button className='px-[20px] py-10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner'>Sign Up</button>

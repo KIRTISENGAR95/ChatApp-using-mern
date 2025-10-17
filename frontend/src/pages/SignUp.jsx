@@ -10,7 +10,7 @@ function SignUp(){
   let [email,setEmail]=useState("")
   let [password,setPassword]=useState("")
   let[loading,setLoading]=useState(false)
-
+  let[err,setError]=useState("")
   const handleSignUp=async(e)=>{
     e.preventDefault()
     setLoading(true)
@@ -24,9 +24,11 @@ function SignUp(){
       setEmail("")
       setPassword("")
       setLoading(false)
+      setError("")
     }catch(error){
       console.log(error)
       setLoading(false)
+      setError(error?.response?.data?.message)
     }
   }
   return (
@@ -43,8 +45,8 @@ function SignUp(){
           <input type={`${show ? "text":"password"}`} placeholder='password' className='w-full h-full outline-none px-[20px] py-[10px] bg-[white] shadow-gray-200 shadow-lg text-gray-700 text-[19px]'onChange={(e)=>setPassword(e.target.value)} value={password}/>
           <span className='absolute top-[10px] right-[20px] text-[19px] text-[#20c7ff] font-semibold cursor-pointer' onClick={()=>setShow(prev=>!prev )}>{`${show?"hidden":"show"}`}</span>
         </div>
-
-        <button type="submit" className='px-[20px] py-[10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner'>{loading?"Loading...":" Sign Up"}</button>
+        {err && <p className='text-red-500 '>{"*" +err}</p>}
+        <button type="submit" className='px-[20px] py-[10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner' disabled={loading}>{loading?"Loading...":" Sign Up"}</button>
 
         <p className='cursor-pointer' onClick={()=>navigate("/login")}>Already have an Account ? <span className='text-[#20c7ff] text-[bold]'>Login</span></p>
       </form>

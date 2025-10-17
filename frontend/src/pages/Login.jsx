@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-// import { serverUrl } from '../config'
+import { serverUrl } from '../main'
 function Login(){
   let navigate = useNavigate()
   let [show, setShow] = useState(false)
+  let [loading,setLoading]=useState(false)
+  let[err,setError]=useState("")
   let [email,setEmail]=useState("")
   let [password,setPassword]=useState("")
 
   const handleLogin=async(e)=>{
     e.preventDefault()
+    setLoading(true)
     try{
       let result=await axios.post(`${serverUrl}/api/auth/login`,{
         email,
@@ -18,8 +21,12 @@ function Login(){
       console.log(result)
       setEmail("")
       setPassword("")
+      setLoading(false)
+      setError("")
     }catch(error){
       console.log(error)
+      setError(error.response.data.message)
+      setLoading(false)
     }
   }
   return (
@@ -36,8 +43,8 @@ function Login(){
           <input type={`${show ? "text":"password"}`} placeholder='password' className='w-full h-full outline-none px-[20px] py-[10px] bg-[white] shadow-gray-200 shadow-lg text-gray-700 text-[19px]'onChange={(e)=>setPassword(e.target.value)} value={password}/>
           <span className='absolute top-[10px] right-[20px] text-[19px] text-[#20c7ff] font-semibold cursor-pointer' onClick={()=>setShow(prev=>!prev )}>{`${show?"hidden":"show"}`}</span>
         </div>
-
-        <button className='px-[20px] py-10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner'>Login</button>
+        {err && <p className='text-red-500 '>{"*" +err}</p>}
+        <button className='px-[20px] py-10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner' disabled={loading}>{loading?"Loading...":"Login"}</button>
 
         <p className='cursor-pointer' onClick={()=>navigate("/signup")}>Want to create a new Account ? <span className='text-[#20c7ff] text-[bold]'>Login</span></p>
       </form>

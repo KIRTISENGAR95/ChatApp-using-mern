@@ -4,9 +4,7 @@ import generateToken from "../config/token.js";
 
 export const signUp = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        // Convert username to userName for database consistency
-        const userName = username;
+        const { userName, email, password } = req.body;
         const checkUserByUserName = await User.findOne({ userName });
         if (checkUserByUserName) {
             return res.status(400).json({ message: "User already exists" });
@@ -31,7 +29,7 @@ export const signUp = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             maxAge:7 * 24 * 60 * 60 * 1000,
-            sameSite:"None",
+            sameSite:"Strict",
             secure:false,
         })
 
@@ -57,11 +55,11 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Incorrect password" });
         }
         
-        const token = await genToken(user._id);
+        const token = await generateToken(user._id);
         res.cookie("token", token, {
             httpOnly: true,
             maxAge:7 * 24 * 60 * 60 * 1000,
-            sameSite:"None",
+            sameSite:"Strict",
             secure:false,
         })
 

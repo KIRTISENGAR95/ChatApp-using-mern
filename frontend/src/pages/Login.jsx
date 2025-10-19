@@ -2,30 +2,34 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { serverUrl } from '../main'
-function Login(){
-  let navigate = useNavigate()
-  let [show, setShow] = useState(false)
-  let [loading,setLoading]=useState(false)
-  let[err,setError]=useState("")
-  let [email,setEmail]=useState("")
-  let [password,setPassword]=useState("")
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../redux/userSlice'
 
+function Login(){
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [show, setShow] = useState(false)
+  const [loading,setLoading]=useState(false)
+  const [err,setError]=useState("")
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+  
   const handleLogin=async(e)=>{
     e.preventDefault()
     setLoading(true)
     try{
-      let result=await axios.post(`${serverUrl}/api/auth/login`,{
+      const result=await axios.post(`${serverUrl}/api/auth/login`,{
         email,
         password
       },{withCredentials:true})
-      console.log(result)
+      dispatch(setUserData(result.data))
       setEmail("")
       setPassword("")
       setLoading(false)
       setError("")
     }catch(error){
       console.log(error)
-      setError(error.response.data.message)
+      setError(error?.response?.data?.message || "Login failed")
       setLoading(false)
     }
   }
@@ -44,9 +48,9 @@ function Login(){
           <span className='absolute top-[10px] right-[20px] text-[19px] text-[#20c7ff] font-semibold cursor-pointer' onClick={()=>setShow(prev=>!prev )}>{`${show?"hidden":"show"}`}</span>
         </div>
         {err && <p className='text-red-500 '>{"*" +err}</p>}
-        <button className='px-[20px] py-10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner' disabled={loading}>{loading?"Loading...":"Login"}</button>
+        <button type='submit' className='px-[20px] py-[10px] bg-[#20c7ff] rounded-2xl shadow-gray-400 shadow-lg text-[20px] w-[200px] mt-[20px] font-semibold hover:shadow-inner' disabled={loading}>{loading?"Loading...":"Login"}</button>
 
-        <p className='cursor-pointer' onClick={()=>navigate("/signup")}>Want to create a new Account ? <span className='text-[#20c7ff] text-[bold]'>Login</span></p>
+        <p className='cursor-pointer' onClick={()=>navigate("/signup")}>Want to create a new Account ? <span className='text-[#20c7ff] font-bold'>Login</span></p>
       </form>
       </div>
     </div>

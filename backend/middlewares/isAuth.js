@@ -13,7 +13,7 @@ const isAuth = (req, res, next) => {
 
     return next();
   } catch (error) {
-    return res.status(500).json({ err: `isauth error ${error.message}` });
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 

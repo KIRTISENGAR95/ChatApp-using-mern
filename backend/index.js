@@ -10,9 +10,10 @@ import cors from "cors"
 const port = process.env.PORT || 5000
 
 const app = express();
+const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
 app.use(cors({
-  origin:"http://localhost:5173",
-  credentials:true
+  origin: allowedOrigins,
+  credentials: true
 }))
 app.use(express.json())
 app.use(cookieParser())

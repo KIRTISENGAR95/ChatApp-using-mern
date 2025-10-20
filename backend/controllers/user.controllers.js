@@ -12,3 +12,4 @@ export const getCurrentUser = async (req, res) => {
     return res.status(500).json({ err: `current user error ${error}` });
   }
 };
+

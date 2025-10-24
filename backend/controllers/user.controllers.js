@@ -19,7 +19,8 @@ export const editProfile=async(req,res)=>{
     let {name}=req.body
     let image;
     if(req.file){
-      image= await uploadOnCloudinary(req.file.path)
+      image = "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg";
+      
     }
     const user = await User.findByIdAndUpdate(
       req.userId,
@@ -31,6 +32,7 @@ export const editProfile=async(req,res)=>{
     }
     return res.status(200).json(user);
   }catch(error){
-    return res.status(500).json({message:`profile error ${error}`})
+    console.error("Profile update error:", error);
+    return res.status(500).json({message:`profile error ${error.message || error}`})
   }
 }

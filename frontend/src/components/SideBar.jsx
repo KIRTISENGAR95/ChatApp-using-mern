@@ -4,7 +4,7 @@ import dp from "../assets/dp.webp"
 import { IoIosSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 function SideBar() {
-    let {userData} = useSelector(state=>state.user)
+    let {userData,OtherUsers} = useSelector(state=>state.user)
     let [search,setSearch] = useState(false)
   return (
     <div className="lg:w-[30%] w-full h-full bg-slate-200">
@@ -19,14 +19,14 @@ function SideBar() {
         </div>
         <div>
           {!search && (
-            <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center bg-white shadow-gray-500 shadow-lg cursor-pointer' onClick={()=>setSearch(true)}>
+            <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center bg-white shadow-gray-500 cursor-pointer shadow-lg cursor-pointer' onClick={()=>setSearch(true)}>
               <IoIosSearch className='w-[25px] h-[25px]' />
             </div>
           )}
           {search && (
             <form className='w-full h-[60px] bg-white shadow-gray-500 shadow-lg flex items-center gap-[10px] mt-[10px] rounded-full overflow-hidden px-[20px]'>
               <IoIosSearch className='w-[25px] h-[25px]' />
-              <input type="text" placeholder='search users...' className='w-full h-full p-[10px] outline-0 border-0' />
+              <input type="text" placeholder='search users...' className='w-full h-full p-[10px] text-[17px] outline-0 border-0' />
               <RxCross2 className='w-[25px] h-[25px] cursor-pointer' onClick={()=>setSearch(false)} />
             </form>
           )}

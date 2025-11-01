@@ -4,18 +4,22 @@ const userSlice = createSlice({
     name:"user",
     initialState:{
         userData:null,
-        otherUser:null,
+        otherUsers:null,
     },
     reducers:{
         setUserData:(state,action)=>{
             state.userData=action.payload
         },
-        setOtherUser:(state,action)=>{
-            state.otherUser=action.payload
+        setOtherUsers:(state,action)=>{
+            state.otherUsers=action.payload
+        },
+        getOtherUsers:(state)=>{
+            // Optional: you can return the current otherUsers if needed
+            return state.otherUsers;
         }
     }
 })
 
-export const {setUserData,setOtherUser}=userSlice.actions
+export const {setUserData,setOtherUsers,getOtherUsers}=userSlice.actions
 
 export default userSlice.reducer

@@ -23,12 +23,12 @@ function Login(){
         password
       },{withCredentials:true})
       dispatch(setUserData(result.data))
+      navigate("/home")
       setEmail("")
       setPassword("")
       setLoading(false)
       setError("")
     }catch(error){
-      // console.log(error)
       setError(error?.response?.data?.message || "Login failed")
       setLoading(false)
     }

@@ -21,7 +21,13 @@ app.use(cookieParser())
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
 
-app.listen(port, () => {
-    connectDb()
-  console.log(`Server is running on port ${port}`);
-})
+connectDb()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    })
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err?.message || err);
+    process.exit(1);
+  });

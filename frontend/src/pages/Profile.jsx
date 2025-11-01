@@ -12,7 +12,7 @@ function Profile(){
     let dispatch=useDispatch()
     let navigate=useNavigate()
     let [name,setName]=useState(userData.name || "")
-    let[frontendImage,setFrontendImage]=useState(userData.image || dp)
+    let[frontendImage,setFrontendImage]=useState( dp)
     let [backendImage,setBackendImage]=useState(null)
     let image=useRef()
     let [saving,setSaving]=useState(false)

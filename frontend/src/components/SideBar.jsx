@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import {useSelector} from 'react-redux'
-import dp from "../assets/dp.webp"
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { BiLogOutCircle } from "react-icons/bi";
 import { IoIosSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import {BiLogOutCircle} from "react-icons/bi"
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { setOtherUsers, setUserData } from '../redux/userSlice'
-import { serverUrl } from '../config/config'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import dp from "../assets/dp.webp";
+import { serverUrl } from '../config/config';
+import { setOtherUsers, setUserData } from '../redux/userSlice';
 
 
 
@@ -28,6 +27,11 @@ function SideBar() {
         console.log(error)
       }
     }
+
+    useEffect(()=>{
+      console.log(userData);
+    })
+
   return (
     <div className="lg:w-[30%] w-full h-full bg-slate-200">
       <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center bg-[#20c7ff] shadow-gray-500 text-gray-700 cursor-pointer shadow-lg fixed bottom-[20px] left-[10px]' onClick={handleLogOut}>
@@ -37,8 +41,8 @@ function SideBar() {
         <h1 className='text-white font-bold text-[25px]'>ChatApp</h1>
         <div className='w-full flex justify-between items-center'>
         <h1 className='text-gray-800 font-bold text-[25px]'>Hii  , {userData.name}</h1>
-        <div className='w-[60px] h-[60px] rounded-full overflow-hidden justify-center items-center shadow-gray-500 shadow-lg' onClick={()=>setSearch(true)}>
-            <img src = { dp} alt = "" className='h-[100%]'/>
+        <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center cursor-pointer shadow-gray-500 shadow-lg' onClick={()=>navigate("/profile")}>
+            <img src={userData.image ? `${userData.image}` : dp} alt="" className='h-[100%] w-full object-cover'/>
         </div>
         </div>
         <div className='flex items-center gap-[12px] mt-[10px]'>

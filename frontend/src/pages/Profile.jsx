@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
-import { serverUrl } from '../main';
+import { serverUrl } from '../config/config';
+import { setUserData } from '../redux/userSlice';
 function Profile(){
     let {userData} = useSelector(state=>state.user)
     let dispatch=useDispatch()
@@ -36,6 +37,7 @@ function Profile(){
             let result = await axios.put(`${serverUrl}/api/user/profile`,formData,{withCredentials:true})
             setSaving(false)
             dispatch(setUserData(result.data))
+            navigate("/home")
         }catch(error){
             setSaving(false)
         }

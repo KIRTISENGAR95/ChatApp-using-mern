@@ -18,7 +18,7 @@ const setOtherUsers = () => {
       }
     }
     fetchUser()
-  }, [])
+  }, [userData])
 }
 
 export default getOtherUsers

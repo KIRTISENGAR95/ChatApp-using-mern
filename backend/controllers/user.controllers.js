@@ -22,14 +22,16 @@ export const getCurrentUser = async (req, res) => {
 export const editProfile = async (req, res) => {
   try {
     let { name } = req.body;
-    let updateData = { name };
+    let updateData = {};
+    if (name && name.trim()) {
+      updateData.name = name.trim();
+    }
     
     if (req.file) {
       try {
-        // Save the file locally and store the path
+        
         updateData.image = req.file.path.replace(/\\/g, '/');
         
-        // If you want to use Cloudinary instead, uncomment these lines
         const uploadUrl = await uploadOnCloudinary(req.file.path);
         console.log(uploadUrl);
         if (uploadUrl) {
@@ -45,7 +47,8 @@ export const editProfile = async (req, res) => {
       req.userId,
       updateData,
       { new: true, runValidators: true }
-    );
+    )
+    
     
     if (!user) {
       return res.status(404).json({ message: "User not found" });

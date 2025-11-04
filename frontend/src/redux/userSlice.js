@@ -14,7 +14,6 @@ const userSlice = createSlice({
             state.otherUsers=action.payload
         },
         getOtherUsers:(state)=>{
-            // Optional: you can return the current otherUsers if needed
             return state.otherUsers;
         }
     }

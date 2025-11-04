@@ -41,29 +41,56 @@ function SideBar() {
         <h1 className='text-white font-bold text-[25px]'>ChatApp</h1>
         <div className='w-full flex justify-between items-center'>
         <h1 className='text-gray-800 font-bold text-[25px]'>Hii  , {userData.name}</h1>
-        <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center cursor-pointer shadow-gray-500 shadow-lg' onClick={()=>navigate("/profile")}>
-            <img src={userData.image ? `${userData.image}` : dp} alt="" className='h-[100%] w-full object-cover'/>
+        <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center bg-white cursor-pointer shadow-gray-500 shadow-lg' onClick={()=>navigate("/profile")}>
+            {
+              /* Use absolute URL as-is (e.g., Cloudinary), otherwise prefix serverUrl for local files */
+            }
+            <img
+              src={userData?.image ? (userData.image.startsWith('http') ? userData.image : `${serverUrl}/${userData.image}`) : dp}
+              alt=""
+              className='h-[100%] w-full object-cover'
+            />
         </div>
         </div>
-        <div className='flex items-center gap-[12px] mt-[10px]'>
-          {!search ? (
-            <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center bg-white shadow-gray-500 cursor-pointer shadow-lg' onClick={()=>setSearch(true)}>
+        <div className='w-full flex items-center gap-[20px] '>
+          {!search &&
+            <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center bg-white shadow-gray-500 cursor-pointer shadow-lg' onClick={()=>setSearch(true)}>
               <IoIosSearch className='w-[25px] h-[25px]' />
-            </div>
-          ) : (
-            <form className='w-full h-[60px] bg-white shadow-gray-500 shadow-lg flex items-center gap-[10px] mt-[10px] rounded-full overflow-hidden px-[20px]'>
+            </div>}
+            {search && 
+              <form className='w-full h-[60px] bg-white shadow-gray-500 shadow-lg flex items-center gap-[10px] mt-[10px] rounded-full overflow-hidden px-[20px]'>
               <IoIosSearch className='w-[25px] h-[25px]' />
               <input type="text" placeholder='search users...' className='w-full h-full p-[10px] text-[17px] outline-0 border-0' />
               <RxCross2 className='w-[25px] h-[25px] cursor-pointer' onClick={()=>setSearch(false)} />
             </form>
-          )}
-          {otherUsers?.map((user, idx)=> (
-            <div key={idx} className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center'>
-              <img src={user.image || dp} alt='' className='h-[100%] w-full object-cover' />
+            }
+           
+          {!search && otherUsers?.map((user)=> (
+            <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 bg-white shadow-lg'>
+              <img
+                src={user?.image ? (user.image.startsWith('http') ? user.image : `${serverUrl}/${user.image}`) : dp}
+                alt=''
+                className='h-[100%] w-full object-cover'
+              />
             </div>
           ))}
         </div>
       </div>
+      <div className='w-full h-[60vh] overflow-auto flex flex-col gap-[20px] items-center mt-[20px]'>
+        {otherUsers?.map((user)=> (
+          <div className='w-[95%] h-[60px] mt-[10px] flex items-center gap-[20px] shadow-gray-500 bg-white shadow-lg rounded-full hover:bg-[#b2ccdf] cursor-pointer'>
+            <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 bg-white shadow-lg'>
+              <img
+                src={user?.image ? (user.image.startsWith('http') ? user.image : `${serverUrl}/${user.image}`) : dp}
+                alt=''
+                className='h-[100%] w-full object-cover'
+              />
+            </div>
+            <h1 className='text-gray-800 font-semibold text-[20px]'>{user.name || user.userName}</h1>
+            </div>
+          ))}
+      </div>
+      
     </div>
   )
 }

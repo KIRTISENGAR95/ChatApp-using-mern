@@ -37,7 +37,7 @@ function Login(){
     <div className='w-full h-[100vh] bg-slate-300 flex items-center justify-center'>
       <div className='w-full max-w-[500px] h-[600px] bg-white rounded-lg shadow-gray-400 shadow-lg flex flex-col gap-[10px]'>
         <div className='w-full h-[200px] bg-[#19cdff] rounded-b-[30%] shadow-gray-400 shadow-lg flex items-center justify-center'>
-          <h1 className='text-gray-600 font-bold text-[30px]'>Login to <span className='text-white'> ChatApp</span></h1>
+          <h1 className='text-gray-600 font-bold text-[30px]'>Login to <span className='text-white'> Talkify</span></h1>
         </div>
         <form className='w-full flex flex-col gap-[20px] items-center' onSubmit={handleLogin}>
 

@@ -8,7 +8,7 @@ function MessageArea() {
   let {selectedUser}=useSelector(state=>state.user);
   let dispatch=useDispatch();
   return (
-    <div className="lg:w-[70%] hidden lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300">
+    <div className={`lg:w-[70%] ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300`}>
       {selectedUser && <div className='w-full h-[100px] bg-[#1797c2] shadow-gray-400 shadow-lg gap-[20px] flex items-center px-[20px]'>
         <div className="flex items-center gap-4 mt-[20px]">
           <div className="cursor-pointer" onClick={()=>dispatch(setSelectedUser(null))}>

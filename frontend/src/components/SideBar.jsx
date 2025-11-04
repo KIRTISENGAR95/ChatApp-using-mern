@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dp from "../assets/dp.webp";
 import { serverUrl } from '../config/config';
-import { setOtherUsers, setUserData } from '../redux/userSlice';
-
-
+import { setOtherUsers, setUserData, setSelectedUser } from '../redux/userSlice';
 
 function SideBar() {
     let {userData, otherUsers} = useSelector(state=>state.user)
@@ -28,10 +26,6 @@ function SideBar() {
       }
     }
 
-    useEffect(()=>{
-      console.log(userData);
-    })
-
   return (
     <div className="lg:w-[30%] w-full h-full bg-slate-200">
       <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center bg-[#20c7ff] shadow-gray-500 text-gray-700 cursor-pointer shadow-lg fixed bottom-[20px] left-[10px]' onClick={handleLogOut}>
@@ -42,9 +36,7 @@ function SideBar() {
         <div className='w-full flex justify-between items-center'>
         <h1 className='text-gray-800 font-bold text-[25px]'>Hii  , {userData.name}</h1>
         <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center bg-white cursor-pointer shadow-gray-500 shadow-lg' onClick={()=>navigate("/profile")}>
-            {
-              /* Use absolute URL as-is (e.g., Cloudinary), otherwise prefix serverUrl for local files */
-            }
+            
             <img
               src={userData?.image ? (userData.image.startsWith('http') ? userData.image : `${serverUrl}/${userData.image}`) : dp}
               alt=""
@@ -66,7 +58,7 @@ function SideBar() {
             }
            
           {!search && otherUsers?.map((user)=> (
-            <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 bg-white shadow-lg'>
+            <div key={user._id} className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 bg-white shadow-lg'>
               <img
                 src={user?.image ? (user.image.startsWith('http') ? user.image : `${serverUrl}/${user.image}`) : dp}
                 alt=''
@@ -78,7 +70,7 @@ function SideBar() {
       </div>
       <div className='w-full h-[60vh] overflow-auto flex flex-col gap-[20px] items-center mt-[20px]'>
         {otherUsers?.map((user)=> (
-          <div className='w-[95%] h-[60px] mt-[10px] flex items-center gap-[20px] shadow-gray-500 bg-white shadow-lg rounded-full hover:bg-[#b2ccdf] cursor-pointer'>
+          <div key={user._id} className='w-[95%] h-[60px] mt-[10px] flex items-center gap-[20px] shadow-gray-500 bg-white shadow-lg rounded-full hover:bg-[#78cae5] cursor-pointer'onClick={()=>dispatch(setSelectedUser(user))}>
             <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 bg-white shadow-lg'>
               <img
                 src={user?.image ? (user.image.startsWith('http') ? user.image : `${serverUrl}/${user.image}`) : dp}

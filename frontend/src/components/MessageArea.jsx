@@ -2,7 +2,10 @@ import React from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import dp from "../assets/dp.webp";
 import { useSelector, useDispatch } from "react-redux";
-import { setSelectedUser } from "../redux/userSlice"; // assuming the action is exported from here
+import { setSelectedUser } from "../redux/userSlice"; 
+import {RiEmojiStickerLine} from "react-icons/ri"
+import {FaImages} from "react-icons/fa6"
+import {RiSendPlane2Fill} from "react-icons/ri"
 
 function MessageArea() {
   let {selectedUser}=useSelector(state=>state.user);
@@ -28,8 +31,19 @@ function MessageArea() {
         <span className='text-gray-700 font-semibold text-[30px]'>Talk with Friendly !</span>
       </div>}
 
-      <div className='w-full h-[100px] fixed bottom-[20px] '>
-        <form className='w-[95%] max-w-[60%] h-[60px] bg-[#1797c2]'></form>
+      <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center marker'>
+        <form className='w-[95%] max-w-[70%] h-[60px] bg-[rgb(23,151,194)] shadow-gray-400 shadow-lg rounded-full'>
+          <div>
+            <RiEmojiStickerLine/>
+          </div>
+          <input type="text"/>
+          <div>
+            <FaImages/>
+          </div>
+          <div>
+            <RiSendPlane2Fill/>
+          </div>
+        </form>
       </div>
     </div>
   )

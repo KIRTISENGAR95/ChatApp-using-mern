@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import dp from "../assets/dp.webp";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,12 +9,29 @@ import {RiSendPlane2Fill} from "react-icons/ri"
 import EmojiPicker from 'emoji-picker-react'
 import SenderMessage from './SenderMessage';
 import ReceiverMessage from './ReceiverMessage';
+import { serverUrl } from '../config/config';
 
 function MessageArea() {
   let {selectedUser}=useSelector(state=>state.user);
   let dispatch=useDispatch();
   let[showPicker,setShowPicker]=useState(false);
   let [input,setInput]=useState("")
+  let[frontMessages,setFrontMessages]=useState(null)
+  let[backendMessages,setBackendMessages]=useState(null)
+  let image=useRef()
+
+  const handleSendMessage=async()=>{
+    try {
+      let formData=new FormData()
+      formData("message",input)
+      if(backendImage){
+        formData("image",backendImage)
+      }
+      let result = await axios.post(`${serverUrl}/api/message/send/${selectedUser._id}`,formData,{withCredentials:true})
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const onEmojiClick=(emojiData)=>{
     setInput(prevInput=>prevInput+emojiData.emoji)
     setShowPicker(false)
@@ -38,12 +55,13 @@ function MessageArea() {
         </div>
       </div>
 
-      <div className='w-full h-[550px] flex-col pt-[30px] px-[20px]'>
+      <div className='w-full h-[550px] flex flex-col py-[30px] px-[20px] overflow-auto'>
 
         {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg'onEmojiClick={onEmojiClick}/></div> }
 
-        <SenderMessage/>
+        {/* <SenderMessage/>
         <ReceiverMessage/>
+        <SenderMessage/> */}
 
       </div>
       </div>
@@ -59,8 +77,9 @@ function MessageArea() {
           <div onClick={()=>setShowPicker(prev=>!prev)}>
             <RiEmojiStickerLine className='w-[25px] h-[25px] text-white cursor-pointer'/>
           </div>
+          <input type="file" accept="image/*" ref={image} hidden></input>
           <input type="text" className='w-full h-full px-[10px] outline-none border-0 text-[19px] text-white bg-transparent placeholder-white' placeholder='Message' onChange={(e)=>setInput(e.target.value)} value={input}/>
-          <div >
+          <div onClick={()=>image.current.click()} >
             <FaImages className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
           <div >

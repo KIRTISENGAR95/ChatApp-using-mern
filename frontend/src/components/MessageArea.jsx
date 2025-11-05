@@ -7,6 +7,8 @@ import {RiEmojiStickerLine} from "react-icons/ri"
 import {FaImages} from "react-icons/fa6"
 import {RiSendPlane2Fill} from "react-icons/ri"
 import EmojiPicker from 'emoji-picker-react'
+import SenderMessage from './SenderMessage';
+import ReceiverMessage from './ReceiverMessage';
 
 function MessageArea() {
   let {selectedUser}=useSelector(state=>state.user);
@@ -36,8 +38,12 @@ function MessageArea() {
         </div>
       </div>
 
-      <div className='w-full h-[550px]'>
+      <div className='w-full h-[550px] flex-col pt-[30px] px-[20px]'>
+
         {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg'onEmojiClick={onEmojiClick}/></div> }
+
+        <SenderMessage/>
+        <ReceiverMessage/>
 
       </div>
       </div>

@@ -30,21 +30,22 @@ function MessageArea() {
         <h1 className='text-gray-700 font-bold text-[50px]'>welcome to Talkify</h1>
         <span className='text-gray-700 font-semibold text-[30px]'>Talk with Friendly !</span>
       </div>}
-
-      <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center marker'>
-        <form className='w-[95%] max-w-[70%] h-[60px] bg-[rgb(23,151,194)] shadow-gray-400 shadow-lg rounded-full'>
+      
+      {selectedUser && <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center marker:'>
+        <form className='w-[95%] max-w-[70%] h-[60px] bg-[#1797c2] shadow-gray-400 shadow-lg rounded-full flex items-center gap-[20px] px-[20px]'>
           <div>
-            <RiEmojiStickerLine/>
+            <RiEmojiStickerLine className='w-[25px] h-[25px] text-white cursor-pointer'/>
           </div>
-          <input type="text"/>
-          <div>
-            <FaImages/>
+          <input type="text" className='w-full h-full px-[10px] outline-none border-0 text-[19px] text-white bg-transparent'/>
+          <div >
+            <FaImages className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
-          <div>
-            <RiSendPlane2Fill/>
+          <div >
+            <RiSendPlane2Fill className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
         </form>
-      </div>
+      </div>}
+      
     </div>
   )
 }

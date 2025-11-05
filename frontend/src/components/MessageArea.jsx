@@ -12,6 +12,11 @@ function MessageArea() {
   let {selectedUser}=useSelector(state=>state.user);
   let dispatch=useDispatch();
   let[showPicker,setShowPicker]=useState(false);
+  let [input,setInput]=useState("")
+  const onEmojiClick=(emojiData)=>{
+    setInput(prevInput=>prevInput+emojiData.emoji)
+    setShowPicker(false)
+  }
   return (
     <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300`}>
       {selectedUser && 
@@ -32,12 +37,11 @@ function MessageArea() {
       </div>
 
       <div className='w-full h-[550px]'>
-        {showPicker && <EmojiPicker/> }
+        {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg'onEmojiClick={onEmojiClick}/></div> }
 
       </div>
       </div>
       }
-
 
       {!selectedUser && <div className='w-full h-full flex  flex-col justify-center items-center '>
         <h1 className='text-gray-700 font-bold text-[50px]'>welcome to Talkify</h1>
@@ -49,7 +53,7 @@ function MessageArea() {
           <div onClick={()=>setShowPicker(prev=>!prev)}>
             <RiEmojiStickerLine className='w-[25px] h-[25px] text-white cursor-pointer'/>
           </div>
-          <input type="text" className='w-full h-full px-[10px] outline-none border-0 text-[19px] text-white bg-transparent placeholder-white' placeholder='Message'/>
+          <input type="text" className='w-full h-full px-[10px] outline-none border-0 text-[19px] text-white bg-transparent placeholder-white' placeholder='Message' onChange={(e)=>setInput(e.target.value)} value={input}/>
           <div >
             <FaImages className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>

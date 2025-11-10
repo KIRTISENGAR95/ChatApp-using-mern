@@ -6,4 +6,6 @@ const messageRouter = express.Router();
 
 messageRouter.post("/send/:receiver", isAuth, upload.single("image"), sendMessage);
 messageRouter.get("/get/:receiver", isAuth, getMessages);
+
+messageRouter.get("/:id", isAuth, getMessages);
 export default messageRouter;

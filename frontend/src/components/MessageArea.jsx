@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import dp from "../assets/dp.webp";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import EmojiPicker from 'emoji-picker-react'
 import SenderMessage from './SenderMessage';
 import ReceiverMessage from './ReceiverMessage';
 import { serverUrl } from '../config/config';
-
+import axios from 'axios';
 function MessageArea() {
   let {selectedUser}=useSelector(state=>state.user);
   let dispatch=useDispatch();
@@ -18,16 +18,48 @@ function MessageArea() {
   let [input,setInput]=useState("")
   let[frontMessages,setFrontMessages]=useState(null)
   let[backendMessages,setBackendMessages]=useState(null)
+  const [backendImage, setBackendImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   let image=useRef()
+  
+
+  
+  useEffect(()=>{
+    if(!selectedUser) return;
+    const fetchMessages=async()=>{
+      try {
+        const res=await axios.get(`${serverUrl}/api/message/${selectedUser._id}`,{withCredentials:true});
+        
+        setBackendMessages(res.data.messages||[]);
+        setFrontMessages(res.data.messages||[]);
+      }catch(err){
+        console.log(err);
+        setBackendMessages([]);
+        setFrontMessages([]);
+      }
+    };
+    fetchMessages();
+  },[selectedUser]);
 
   const handleSendMessage=async()=>{
+    
     try {
       let formData=new FormData()
-      formData("message",input)
+      formData.append("message",input)
       if(backendImage){
-        formData("image",backendImage)
+        formData.append("image",backendImage)
       }
       let result = await axios.post(`${serverUrl}/api/message/send/${selectedUser._id}`,formData,{withCredentials:true})
+      const newMsg = {
+        message: input,
+        image: result.data.image || null,
+        sender: "me"
+      };
+     
+      setFrontMessages(prev=>[...prev,newMsg]);
+      setInput("");
+      setBackendImage(null);
+      setPreviewImage(null);
     } catch (error) {
       console.log(error)
     }
@@ -35,6 +67,16 @@ function MessageArea() {
   const onEmojiClick=(emojiData)=>{
     setInput(prevInput=>prevInput+emojiData.emoji)
     setShowPicker(false)
+  }
+
+  const handleImage=(e)=>{
+    let file=e.target.files[0]
+    if(file){
+      setBackendImage(file);
+      const reader=new FileReader();
+      reader.onloadend=()=>setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
+    }
   }
   return (
     <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300`}>
@@ -58,10 +100,7 @@ function MessageArea() {
       <div className='w-full h-[550px] flex flex-col py-[30px] px-[20px] overflow-auto'>
 
         {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg'onEmojiClick={onEmojiClick}/></div> }
-
-        {/* <SenderMessage/>
-        <ReceiverMessage/>
-        <SenderMessage/> */}
+        
 
       </div>
       </div>
@@ -72,17 +111,20 @@ function MessageArea() {
         <span className='text-gray-700 font-semibold text-[30px]'>Talk with Friendly !</span>
       </div>}
       
-      {selectedUser && <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center marker:'>
+      {selectedUser && <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center '>
+        {previewImage && <img src={previewImage} alt="preview" className='w-[80px] absolute bottom-[100px] right-[20%] rounded-lg shadow-gray-400 shadow-lg'/>}
+
         <form className='w-[95%] lg:w-[70%] h-[60px] bg-[#1797c2] shadow-gray-400 shadow-lg rounded-full flex items-center gap-[20px] px-[20px]' onSubmit={(e)=>e.preventDefault()}>
+          
           <div onClick={()=>setShowPicker(prev=>!prev)}>
             <RiEmojiStickerLine className='w-[25px] h-[25px] text-white cursor-pointer'/>
           </div>
-          <input type="file" accept="image/*" ref={image} hidden></input>
+          <input type="file" accept="image/*" ref={image} hidden onChange={handleImage}></input>
           <input type="text" className='w-full h-full px-[10px] outline-none border-0 text-[19px] text-white bg-transparent placeholder-white' placeholder='Message' onChange={(e)=>setInput(e.target.value)} value={input}/>
           <div onClick={()=>image.current.click()} >
             <FaImages className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
-          <div >
+          <div onClick={handleSendMessage}>
             <RiSendPlane2Fill className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
         </form>

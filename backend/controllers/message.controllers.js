@@ -20,8 +20,10 @@ export const sendMessage = async (req, res) => {
     const newMessage = await Message.create({
       sender,
       receiver,
-      message,
-      image
+      message: {
+        text: message || "",
+        image: image || "",
+      },
     });
 
     if (!conversation) {

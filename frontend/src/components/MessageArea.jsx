@@ -89,8 +89,9 @@ function MessageArea() {
           </div>
         </div>
 
-        <div className='w-full flex-1 flex flex-col py-[30px] px-[20px] overflow-auto'>
-          {messages?.map((mess)=>(
+        <div className='w-full flex-1 flex flex-col py-[30px] px-[20px] overflow-auto gap-[20px] pb-[120px]'>
+          
+          {messages && messages.map((mess)=>(
             mess.sender=== userData._id?
               <SenderMessage key={mess._id} image={mess.message.image} message={mess.message.text}/>:
               <ReceiverMessage key={mess._id} image={mess.message.image} message={mess.message.text}/>

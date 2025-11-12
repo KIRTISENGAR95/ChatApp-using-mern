@@ -8,18 +8,36 @@ import { useSelector } from 'react-redux'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
 import {io} from "socket.io-client"
+import { serverUrl } from './config/config';
+import { useDispatch } from 'react-redux';
+import { setSocket, setOnlineUsers } from './redux/userSlice';
 
 function App(){
   getCurrentUser()
   getOtherUsers()
-  let {userData} = useSelector(state=>state.user)
+  let {userData,socket,onlineUsers} = useSelector(state=>state.user)
+  let dispatch=useDispatch()
 
   useEffect(()=>{
-    const socket=io("http://localhost:8000")
-    socket.on("hello",(message)=>{
-      console.log(message)
-    })
-  },[])
+    if(userData){
+      const socketio=io(`${serverUrl}`,{
+        query:{
+          userId:userData?._id
+        }
+      })
+      dispatch(setSocket(socketio))
+      socketio.on("getOnlineUsers",(users)=>{
+        dispatch(setOnlineUsers(users))
+      })
+      return ()=>socketio.close()
+    }else{
+      if(socket){
+        socket.close()
+        dispatch(setSocket(null))
+      }
+    }
+    
+  },[userData])
   return (
     <Routes>
       <Route path="/" element={<Login />} />

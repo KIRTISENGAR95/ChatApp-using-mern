@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, use } from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import dp from "../assets/dp.webp";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +14,7 @@ import { serverUrl } from '../config/config';
 import axios from 'axios';
 
 function MessageArea() {
-  const {selectedUser,userData}=useSelector(state=>state.user);
+  const {selectedUser,userData,socket}=useSelector(state=>state.user);
   const dispatch=useDispatch();
   const [showPicker,setShowPicker]=useState(false);
   const [input,setInput]=useState("");
@@ -70,6 +70,13 @@ function MessageArea() {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(()=>{
+    socket.on("newMessage",(mess)=>{
+      dispatch(setMessages([...messages,mess]))
+    })
+    return ()=>socket.off("newMessage")
+  },[messages,setMessages])
 
   return (
     <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300`}>

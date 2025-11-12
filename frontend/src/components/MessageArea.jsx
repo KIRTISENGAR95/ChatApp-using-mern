@@ -38,8 +38,11 @@ function MessageArea() {
     fetchMessages();
   }, [selectedUser, dispatch]);
 
-  const handleSendMessage=async()=>{
-    if (!input.trim() && !backendImage) return;
+  const handleSendMessage=async(e)=>{
+    e.preventDefault()
+    if(input.length==0){
+      return
+    }
     try {
       const formData=new FormData();
       formData.append("message", input);
@@ -123,9 +126,11 @@ function MessageArea() {
           <div onClick={()=>image.current.click()} >
             <FaImages className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
-          <div onClick={handleSendMessage}>
-            <RiSendPlane2Fill className='w-[25px] h-[25px] cursor-pointer text-white'/>
-          </div>
+
+          {input.length>0 && <button>
+            <RiSendPlane2Fill className='w-[25px] cursor-pointer h-[25px] text-white'/>
+            </button>}
+          
         </form>
       </div>}
     </div>

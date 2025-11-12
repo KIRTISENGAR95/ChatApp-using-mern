@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, use } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import dp from "../assets/dp.webp";
 import { useSelector, useDispatch } from "react-redux";
@@ -40,7 +40,7 @@ function MessageArea() {
 
   const handleSendMessage=async(e)=>{
     e.preventDefault()
-    if(input.length==0){
+    if(input.length==0 && !backendImage){
       return
     }
     try {
@@ -79,7 +79,7 @@ function MessageArea() {
       dispatch(setMessages([...messages,mess]))
     })
     return ()=>socket.off("newMessage")
-  },[messages,setMessages])
+  },[messages,socket])
 
   return (
     <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300`}>
@@ -99,7 +99,8 @@ function MessageArea() {
           </div>
         </div>
 
-        <div className='w-full flex-1 flex flex-col py-[30px] px-[20px] overflow-auto gap-[20px] pb-[120px]'>
+        <div className='w-full h-[550px] flex flex-col py-[30px] px-[20px] overflow-auto gap-[20px] pb-[120px]'>
+          {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg z-[100]' onEmojiClick={onEmojiClick}/></div>}
           
           {messages && messages.map((mess)=>(
             mess.sender=== userData._id?
@@ -117,7 +118,7 @@ function MessageArea() {
       
       {selectedUser && <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center '>
         {previewImage && <img src={previewImage} alt="preview" className='w-[80px] absolute bottom-[100px] right-[20%] rounded-lg shadow-gray-400 shadow-lg'/>}
-        <form className='w-[95%] lg:w-[70%] h-[60px] bg-[#1797c2] shadow-gray-400 shadow-lg rounded-full flex items-center gap-[20px] px-[20px]' onSubmit={(e)=>e.preventDefault()}>
+        <form className='w-[95%] lg:w-[70%] h-[60px] bg-[#1797c2] shadow-gray-400 shadow-lg rounded-full flex items-center gap-[20px] px-[20px]' onSubmit={handleSendMessage}>
           <div onClick={()=>setShowPicker(prev=>!prev)}>
             <RiEmojiStickerLine className='w-[25px] h-[25px] text-white cursor-pointer'/>
           </div>
@@ -127,7 +128,7 @@ function MessageArea() {
             <FaImages className='w-[25px] h-[25px] cursor-pointer text-white'/>
           </div>
 
-          {input.length>0 && <button>
+          {(input.length>0 || backendImage) && <button type="submit">
             <RiSendPlane2Fill className='w-[25px] cursor-pointer h-[25px] text-white'/>
             </button>}
           

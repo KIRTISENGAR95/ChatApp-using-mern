@@ -4,7 +4,7 @@ import { Server } from "socket.io"
 let app=express()
 
 const server = http.createServer(app)
-const io=new Server({
+const io=new Server(server,{
     cors:{
         origin:"http://localhost:5173"
         
@@ -12,7 +12,9 @@ const io=new Server({
 })
 
 io.on("connection",(socket)=>{
-    console.log("user connected",socket.id)
+    console.log(socket.id)
+
+    io.emit("hello","hello kirti")
 })
 
-export {app,server}
+export {app,server,io}

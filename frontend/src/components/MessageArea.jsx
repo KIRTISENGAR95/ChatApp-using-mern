@@ -99,7 +99,7 @@ function MessageArea() {
           </div>
         </div>
 
-        <div className='w-full h-[calc(100vh-90px-100px)] flex flex-col py-[30px] px-[20px] overflow-auto gap-[20px] pb-[120px] pt-[90px]'>
+        <div className='w-full h-[78vh] flex flex-col py-[50px] px-[20px] overflow-auto gap-[20px] pb-[120px] pt-[90px]'>
           {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg z-[100]' onEmojiClick={onEmojiClick}/></div>}
           
           {messages && messages.map((mess)=>(

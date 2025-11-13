@@ -10,7 +10,7 @@ import { serverUrl } from '../config/config';
 import { setOtherUsers, setUserData, setSelectedUser } from '../redux/userSlice';
 
 function SideBar() {
-    let {userData, otherUsers,selectedUser} = useSelector(state=>state.user)
+    let {userData, otherUsers,selectedUser,onlineUsers} = useSelector(state=>state.user)
     let [search,setSearch] = useState(false)
     let dispatch= useDispatch()
     let navigate = useNavigate()
@@ -27,7 +27,7 @@ function SideBar() {
     }
 
   return (
-    <div className={`lg:w-[30%] w-full h-full lg:block bg-slate-200 ${!selectedUser?"block":"hidden"}`}>
+    <div className={`lg:w-[30%] w-full h-full overflow-hidden lg:block bg-slate-200 ${!selectedUser?"block":"hidden"}`}>
       <div className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center bg-[#20c7ff] shadow-gray-500 text-gray-700 cursor-pointer shadow-lg fixed bottom-[20px] left-[10px]' onClick={handleLogOut}>
         <BiLogOutCircle className='w-[25px] h-[25px]' />
       </div>
@@ -58,6 +58,7 @@ function SideBar() {
             }
            
           {!search && otherUsers?.map((user)=> (
+            onlineUsers?.includes(user._id) &&
             <div key={user._id} className='w-[60px] h-[60px] mt-[10px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 bg-white shadow-lg'>
               <img
                 src={user?.image ? (user.image.startsWith('http') ? user.image : `${serverUrl}/${user.image}`) : dp}

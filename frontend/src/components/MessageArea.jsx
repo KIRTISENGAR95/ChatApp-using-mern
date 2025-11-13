@@ -85,8 +85,8 @@ function MessageArea() {
     <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300`}>
       {selectedUser && 
       <div className='w-full h-[100vh] flex flex-col'>
-        <div className='w-full h-[100px] bg-[#1797c2] shadow-gray-400 shadow-lg gap-[20px] flex flex-col items-center px-[20px]'>
-          <div className="flex items-center gap-4 mt-[20px]">
+        <div className='w-full h-[90px] bg-[#1797c2] shadow-gray-400 shadow-lg flex flex-row items-center justify-start px-[20px] sticky top-0 z-10'>
+          <div className="flex items-center gap-4">
             <div className="cursor-pointer" onClick={()=>dispatch(setSelectedUser(null))}>
               <IoIosArrowRoundBack className="w-[40px] h-[40px] text-white" />
             </div>
@@ -99,7 +99,7 @@ function MessageArea() {
           </div>
         </div>
 
-        <div className='w-full h-[550px] flex flex-col py-[30px] px-[20px] overflow-auto gap-[20px] pb-[120px]'>
+        <div className='w-full h-[calc(100vh-90px-100px)] flex flex-col py-[30px] px-[20px] overflow-auto gap-[20px] pb-[120px] pt-[90px]'>
           {showPicker && <div className='absolute bottom-[120px] left-[20px]'><EmojiPicker width={250} height={350} className='shadow-lg z-[100]' onEmojiClick={onEmojiClick}/></div>}
           
           {messages && messages.map((mess)=>(
